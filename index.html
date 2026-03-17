@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>METROPOLITANO - U17 e U19</title>
+  <style>
+    :root {
+      --bg: #08172f;
+      --panel: #0d2448;
+      --panel-2: #12315f;
+      --text: #f3f7ff;
+      --muted: #b7c7e8;
+      --accent: #2f7dff;
+      --accent-2: #5fa9ff;
+      --line: #24477a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 10%, #13376c 0%, var(--bg) 50%, #050f21 100%);
+      min-height: 100vh;
+    }
+
+    .container {
+      width: min(1160px, 94%);
+      margin: 28px auto;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #0f2a57 0%, #0b1e3f 100%);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: clamp(1.35rem, 2vw, 1.9rem);
+      letter-spacing: 0.4px;
+    }
+
+    .header p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, var(--panel) 0%, #0a1c39 100%);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+    }
+
+    .panel-title {
+      padding: 14px 18px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+      color: #ffffff;
+    }
+
+    .filtros {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(18, 49, 95, 0.35);
+      color: #dbe8ff;
+      font-size: 0.9rem;
+    }
+
+    .filtros select {
+      background: #102a53;
+      border: 1px solid var(--line);
+      color: #eaf2ff;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 0.88rem;
+      outline: none;
+    }
+
+    .groups {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 14px;
+    }
+
+    .group {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .group-title {
+      padding: 10px 12px;
+      background: var(--panel-2);
+      color: #dbe8ff;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 12px;
+      padding: 12px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: linear-gradient(180deg, #11305e 0%, #0b2347 100%);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      color: #dce8ff;
+      font-size: 0.86rem;
+    }
+
+    .card-num {
+      font-weight: 700;
+      color: #b8d3ff;
+      letter-spacing: 0.3px;
+    }
+
+    .card-date {
+      color: #b7c7e8;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.77rem;
+      font-weight: 700;
+      border: 1px solid #5a8edb;
+      color: #dce9ff;
+      background: rgba(95, 169, 255, 0.15);
+      letter-spacing: 0.4px;
+      white-space: nowrap;
+    }
+
+    .jogo {
+      font-weight: 600;
+      line-height: 1.3;
+      color: #f0f6ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 4px;
+    }
+
+    .time {
+      width: 100%;
+    }
+
+    .vs {
+      color: #8eb7ff;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: lowercase;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: minmax(90px, 0.7fr) minmax(190px, 1.3fr);
+      gap: 6px 10px;
+      color: #d6e4ff;
+      font-size: 0.86rem;
+    }
+
+    .meta div {
+      white-space: nowrap;
+    }
+
+    .meta strong {
+      color: #90b7ff;
+      font-weight: 600;
+    }
+
+    .status {
+      padding: 12px 14px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      font-size: 0.88rem;
+    }
+
+    .erro {
+      color: #ffd2d2;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="header">
+      <h1>METROPOLITANO - U17 e U19</h1>
+      <p></p>
+    </section>
+
+    <section class="panel">
+      <div class="panel-title">Jogos Agendados</div>
+      <div class="filtros">
+        <label for="agrupamento">Agrupar por:</label>
+        <select id="agrupamento">
+          <option value="idade">Categoria</option>
+          <option value="fase">Fase</option>
+          <option value="nenhum">Sem agrupamento</option>
+        </select>
+
+        <label for="ordem-idade">Ordenar:</label>
+        <select id="ordem-idade">
+          <option value="sub17-primeiro">SUB-17 → SUB-19</option>
+          <option value="sub19-primeiro">SUB-19 → SUB-17</option>
+          <option value="alfabetica">Alfabética (A-Z)</option>
+        </select>
+      </div>
+      <div id="lista-jogos" class="groups"></div>
+      <div id="status" class="status">Carregando dados...</div>
+    </section>
+  </main>
+
+  <script>
+    const lista = document.getElementById('lista-jogos');
+    const statusEl = document.getElementById('status');
+    const agrupamentoEl = document.getElementById('agrupamento');
+    const ordemIdadeEl = document.getElementById('ordem-idade');
+    let jogosCache = [];
+
+    const parseData = (valor) => {
+      const [dia, mes, ano] = valor.split('/').map(Number);
+      return new Date(ano, mes - 1, dia);
+    };
+
+    const criarCard = (jogo) => {
+      const card = document.createElement('article');
+      card.className = 'card';
+
+      card.innerHTML = `
+        <div class="card-head">
+          <span class="card-num">${jogo['Nº']}</span>
+          <span class="card-date">${jogo['DATA']} · ${jogo['DIA']} · ${jogo['HORA']}</span>
+        </div>
+        <div>
+          <span class="badge">${jogo['IDADE']}</span>
+          <span class="badge">${jogo['FASE']}</span>
+        </div>
+        <div class="jogo">
+          <div class="time">${jogo['TIME A']}</div>
+          <div class="vs">vs</div>
+          <div class="time">${jogo['TIME B']}</div>
+        </div>
+        <div class="meta">
+          <div><strong>Local:</strong> ${jogo['LOCAL']}</div>
+          <div><strong>Ginásio:</strong> ${jogo['GINÁSIO']}</div>
+        </div>
+      `;
+
+      return card;
+    };
+
+    const ordenarIdades = (a, b, ordemPreferida) => {
+      const ia = ordemPreferida.indexOf(a);
+      const ib = ordemPreferida.indexOf(b);
+
+      if (ia !== -1 && ib !== -1) return ia - ib;
+      if (ia !== -1) return -1;
+      if (ib !== -1) return 1;
+      return a.localeCompare(b, 'pt-BR');
+    };
+
+    const criarGrupo = (idade, jogos) => {
+      const grupo = document.createElement('section');
+      grupo.className = 'group';
+
+      const titulo = document.createElement('div');
+      titulo.className = 'group-title';
+      titulo.textContent = idade;
+
+      const cards = document.createElement('div');
+      cards.className = 'cards';
+      jogos.forEach((jogo) => cards.appendChild(criarCard(jogo)));
+
+      grupo.appendChild(titulo);
+      grupo.appendChild(cards);
+      return grupo;
+    };
+
+    function obterOrdemPreferida() {
+      const valor = ordemIdadeEl.value;
+      if (valor === 'sub19-primeiro') return ['SUB-19', 'SUB-17'];
+      if (valor === 'alfabetica') return [];
+      return ['SUB-17', 'SUB-19'];
+    }
+
+    function obterTipoAgrupamento() {
+      return agrupamentoEl.value;
+    }
+
+    function obterValorGrupo(jogo, tipoAgrupamento) {
+      if (tipoAgrupamento === 'fase') return jogo['FASE'] || 'SEM FASE';
+      if (tipoAgrupamento === 'idade') return jogo['IDADE'] || 'SEM CATEGORIA';
+      return 'TODOS OS JOGOS';
+    }
+
+    function renderizarJogos() {
+      if (!jogosCache.length) {
+        lista.innerHTML = '';
+        return;
+      }
+
+      const tipoAgrupamento = obterTipoAgrupamento();
+      const usarOrdemIdade = tipoAgrupamento === 'idade';
+      ordemIdadeEl.disabled = !usarOrdemIdade;
+
+      if (tipoAgrupamento === 'nenhum') {
+        const cards = document.createElement('div');
+        cards.className = 'cards';
+        jogosCache.forEach((jogo) => cards.appendChild(criarCard(jogo)));
+
+        lista.innerHTML = '';
+        lista.appendChild(cards);
+        return;
+      }
+
+      const jogosPorIdade = jogosCache.reduce((acc, jogo) => {
+        const grupo = obterValorGrupo(jogo, tipoAgrupamento);
+        if (!acc[grupo]) acc[grupo] = [];
+        acc[grupo].push(jogo);
+        return acc;
+      }, {});
+
+      const ordemPreferida = usarOrdemIdade ? obterOrdemPreferida() : [];
+      const gruposOrdenados = Object.keys(jogosPorIdade)
+        .sort((a, b) => ordenarIdades(a, b, ordemPreferida));
+
+      lista.innerHTML = '';
+      gruposOrdenados.forEach((grupo) => {
+        lista.appendChild(criarGrupo(grupo, jogosPorIdade[grupo]));
+      });
+    }
+
+    async function carregarJogos() {
+      try {
+        const resposta = await fetch('dados.json');
+        if (!resposta.ok) {
+          throw new Error('Não foi possível acessar dados.json');
+        }
+
+        const jogos = await resposta.json();
+        jogos.sort((a, b) => parseData(a['DATA']) - parseData(b['DATA']));
+        jogosCache = jogos;
+        renderizarJogos();
+
+        statusEl.textContent = `${jogos.length} jogos carregados.`;
+      } catch (erro) {
+        statusEl.innerHTML = '<span class="erro">Erro ao carregar dados.json. Abra esta página por um servidor local (ex.: Live Server).</span>';
+      }
+    }
+
+    agrupamentoEl.addEventListener('change', renderizarJogos);
+    ordemIdadeEl.addEventListener('change', renderizarJogos);
+    carregarJogos();
+  </script>
+</body>
+</html>
